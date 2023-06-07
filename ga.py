@@ -1,22 +1,17 @@
-#Final Programming Project
-#This file contains the Microbial class used in main.py
-#Robert Kellems
-#Based on Microbial class first used in Project 3
-
 import numpy as np
 import random as rn
 
 class Microbial:
     def __init__(self,popSize,noteValue,mProb,valueList):
         """
-        popSize (int): number of genomes to exist in the population
-        noteValue (fraction): the minimum note value that can exist within the 4 bar melody
-        mProb (float): determines the probability for mutation
-        valueList (list): list of binary values that are used for determining fitness
+        popSize (int): número de genomas que existen en la población
+        noteValue (fraction): el valor mínimo de nota que puede existir dentro de la melodía de 4 compases
+        mProb (float): probabilidad de mutación
+        valueList (list): lista de valores binarios que se utilizan para determinar la "adecuación"
         """
         self.popSize = popSize
         self.mProb = mProb
-        self.len = int(4/noteValue) #this is done to ensure that the genome has the right number of genes to create 4 bars of music (e.g. if 1/2 note is the minimum note value, then there should be 4/(1/2) genes).
+        self.len = int(4/noteValue) #esto se hace para asegurar que el genoma tiene el número correcto de genes para crear 4 compases de música (ej, si 1/2 de nota es el valor mínimo de nota, entonces habrían 4/(1/2) de genes.
         self.valueList = valueList
         self.bestFit = 0
         self.bestGenome = None
@@ -24,11 +19,11 @@ class Microbial:
         for i in range(self.popSize):
             for j in range(self.len):
                 self.pop[i][j] = rn.randint(0,14)
-                #0 denotes a rest, 1-12 denote all 12 notes in the chromatic scale starting at C, with 13 denoting C an octave up, and 14 denoting extended duration of a note when it occurs after a note in the order of the genome.
+                #0 denota un silencio, 1-12 denota las 12 notas en la escala cromática comenzando en C(Do), con 13 denota C una octava hacia arriba y 14 denota la duración extendida de una nota cuando ocurre después de una nota en el orden del genoma.
 
     def tournament(self,function):
-        a,b = self.pop[rn.choice(range(self.popSize))], self.pop[rn.choice(range(self.popSize))] #assigns random genomes from the population to "a" and "b"
-        if function(a,self.valueList) > function(b,self.valueList): #fitness values for a and b are compared
+        a,b = self.pop[rn.choice(range(self.popSize))], self.pop[rn.choice(range(self.popSize))] #asigna un genoma aleatorio de la población a "a" y "b"
+        if function(a,self.valueList) > function(b,self.valueList): #valores fitness para el genoma a y b son comparados
             winner,loser = a,b
         else:
             winner,loser = b,a
@@ -41,7 +36,7 @@ class Microbial:
     def mutate(self,l):
         for i in range(self.len):
             if rn.random() < self.mProb:
-                #genes are mutated by adding or subtracting 1
+                #los genes son mutados añadiendo o restando un 1
                 if l[i] == 0:
                     l[i] += 1
                 elif l[i] == 14:
